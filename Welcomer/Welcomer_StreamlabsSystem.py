@@ -7,7 +7,7 @@ ScriptName = "Welcomer"
 Description = "To welcome who came"
 Creator = "E.NeLsOn"
 Version = "1.0.1"
-Website = "http://google.com/"
+Website = "https://github.com/enels0n/StreamLabs-Scripts/tree/main/Welcomer"
 
 configFile = "config.json"
 settings = {}
