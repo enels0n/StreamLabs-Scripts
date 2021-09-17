@@ -1,0 +1,32 @@
+{
+    "output_file": "config.json",
+
+    "liveOnly": {
+        "type": "checkbox",
+        "value": true,
+        "label": "Live Only Mode",
+        "tooltip": "True if you want it to only run when you are live",
+        "group" : "General"
+    },
+    "checkInterval": {
+        "type": "numberbox",
+        "value": 30,
+        "label": "Check interval in seconds",
+        "tooltip": "Check interval in seconds",
+        "group" : "General"
+    },
+    "absenceTime": {
+        "type": "numberbox",
+        "value": 60,
+        "label": "Absence time in minutes",
+        "tooltip": "How long should a person be away to re-greet",
+        "group" : "General"
+    },
+    "welcomeMessage": {
+        "type": "textbox",
+        "value": "Привет, @$user",
+        "label": "Welcome message",
+        "tooltip": "Welcome message",
+        "group" : "General"
+    }
+}
