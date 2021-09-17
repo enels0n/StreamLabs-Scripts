@@ -7,7 +7,7 @@ ScriptName = "Welcomer"
 Description = "To welcome who came"
 Creator = "E.NeLsOn"
 Version = "1.0.1"
-Website = "https://github.com/enels0n/StreamLabs-Scripts/Welcomer/"
+Website = "http://google.com/"
 
 configFile = "config.json"
 settings = {}
@@ -17,7 +17,6 @@ checkTime = 0
 userList = []
 leaversList = {}
 currentTime = 0
-botList = ['anotherttvviewer','business_daddy','cubtree','kittenrescue','ronyrozental','streamelements','wreckinggod','nightbot']
 
 def Init():
   global settings, path
@@ -43,7 +42,7 @@ def ReloadSettings(jsonData):
   return
 
 def Tick():
-  global currentTime, checkTime, settings, userList, leaversList, botList
+  global currentTime, checkTime, settings, userList, leaversList
 
   currentTime = time.time()
   
@@ -53,7 +52,7 @@ def Tick():
 
       currentUserList = Parent.GetViewerList()
       for x in range(len(currentUserList)):
-        if (currentUserList[x] not in userList) and not (currentUserList[x] in leaversList) and (currentUserList[x] not in botList):
+        if (currentUserList[x] not in userList) and not (currentUserList[x] in leaversList):
           userList.append(currentUserList[x])
           out = settings["welcomeMessage"].replace("$user", currentUserList[x])
           Parent.SendStreamMessage(out)
