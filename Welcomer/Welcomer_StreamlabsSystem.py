@@ -6,7 +6,7 @@ import codecs
 ScriptName = "Welcomer"
 Description = "To welcome who came"
 Creator = "E.NeLsOn"
-Version = "1.0.1"
+Version = "1.0.2"
 Website = "https://github.com/enels0n/StreamLabs-Scripts/tree/main/Welcomer"
 
 configFile = "config.json"
@@ -52,15 +52,15 @@ def Tick():
 
       currentUserList = Parent.GetViewerList()
       for x in range(len(currentUserList)):
-        if (currentUserList[x] not in userList) and not (currentUserList[x] in leaversList):
+        if (currentUserList[x] not in userList) and (currentUserList[x] not in leaversList):
           userList.append(currentUserList[x])
           out = settings["welcomeMessage"].replace("$user", currentUserList[x])
           Parent.SendStreamMessage(out)
         else:
-          if currentUserList[x] in leaversList:
+          if (currentUserList[x] not in userList) and (currentUserList[x] in leaversList):
+            del leaversList[currentUserList[x]]
+            userList.append(currentUserList[x])
             if (currentTime>=leaversList[currentUserList[x]]+(settings["absenceTime"]*60)):
-              del leaversList[currentUserList[x]]
-              userList.append(currentUserList[x])
               out = settings["welcomeMessage"].replace("$user", currentUserList[x])
               Parent.SendStreamMessage(out)
 
