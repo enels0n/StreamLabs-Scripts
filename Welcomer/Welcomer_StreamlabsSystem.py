@@ -6,7 +6,7 @@ import codecs
 ScriptName = "Welcomer"
 Description = "To welcome who came"
 Creator = "E.NeLsOn"
-Version = "1.0.2"
+Version = "1.0.3"
 Website = "https://github.com/enels0n/StreamLabs-Scripts/tree/main/Welcomer"
 
 configFile = "config.json"
@@ -14,7 +14,9 @@ settings = {}
 path = ""
 
 checkTime = 0
+greetingTime = 0
 userList = []
+welcomeQueue = []
 leaversList = {}
 currentTime = 0
 
@@ -28,7 +30,7 @@ def Init():
   except:
     settings = {
       "liveOnly": True,
-      "checkInterval": 30,
+      "greetingFrequency": 5,
       "absenceTime": 60,
       "welcomeMessage": "Привет, @$user"
     }
@@ -42,31 +44,34 @@ def ReloadSettings(jsonData):
   return
 
 def Tick():
-  global currentTime, checkTime, settings, userList, leaversList
+  global currentTime, checkTime, settings, userList, leaversList, greetingTime
 
   currentTime = time.time()
   
   if(settings["liveOnly"] and Parent.IsLive()) or (not settings["liveOnly"]):
     if(currentTime >= checkTime):
-      checkTime = currentTime + settings["checkInterval"]
+      checkTime = currentTime + 3
 
       currentUserList = Parent.GetViewerList()
       for x in range(len(currentUserList)):
         if (currentUserList[x] not in userList) and (currentUserList[x] not in leaversList):
           userList.append(currentUserList[x])
-          out = settings["welcomeMessage"].replace("$user", currentUserList[x])
-          Parent.SendStreamMessage(out)
+          welcomeQueue.append(currentUserList[x])
         else:
           if (currentUserList[x] not in userList) and (currentUserList[x] in leaversList):
             del leaversList[currentUserList[x]]
             userList.append(currentUserList[x])
             if (currentTime>=leaversList[currentUserList[x]]+(settings["absenceTime"]*60)):
-              out = settings["welcomeMessage"].replace("$user", currentUserList[x])
-              Parent.SendStreamMessage(out)
-
+              welcomeQueue.append(currentUserList[x])
       for x in range(len(userList)):
         if (userList[x] not in currentUserList):
           if userList[x] not in leaversList:
             leaversList[userList[x]] = currentTime
           del userList[x]
+
+    if(currentTime >= greetingTime and welcomeQueue):
+      greetingTime = currentTime + settings["greetingFrequency"]
+      out = settings["welcomeMessage"].replace("$user", welcomeQueue[0])
+      Parent.SendStreamMessage(out)
+      del welcomeQueue[0]
   return
